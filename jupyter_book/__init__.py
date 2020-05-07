@@ -1,6 +1,7 @@
 """Build a book with Jupyter Notebooks and Sphinx."""
 from .toc import update_indexname, add_toctree
 from .yaml import add_yaml_config
+from .directive import toc
 
 
 __version__ = "0.7.0b2"
@@ -8,6 +9,7 @@ __version__ = "0.7.0b2"
 
 # We connect this function to the step after the builder is initialized
 def setup(app):
+
     app.connect("config-inited", update_indexname)
     app.connect("source-read", add_toctree)
 
@@ -17,6 +19,7 @@ def setup(app):
     app.add_config_value("yaml_config_path", "", "html")
 
     app.connect("config-inited", add_yaml_config)
+    app.add_directive("tableofcontents", toc.TableofContents)
 
     return {
         "version": __version__,
