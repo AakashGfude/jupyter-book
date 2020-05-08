@@ -101,6 +101,7 @@ def build(path_book, path_output, config, toc, warningiserror, builder):
                 latex_config["latex_documents"]["title"] = config_yaml["title"]
             else:
                 latex_config = {"latex_documents": {"title": config_yaml["title"]}}
+        latex_config["latex_engine"] = "xelatex"
 
     BUILD_PATH = path_output if path_output is not None else PATH_BOOK
     BUILD_PATH = Path(BUILD_PATH).joinpath("_build")
@@ -170,7 +171,9 @@ def build(path_book, path_output, config, toc, warningiserror, builder):
                 makecmd = os.environ.get("MAKE", "make")
             try:
                 with cd(OUTPUT_PATH):
-                    subprocess.run([makecmd, "all-pdf"])
+                    output = subprocess.run([makecmd, "all-pdf"])
+                    if output.returncode != 0:
+                        return output.returncode
                 _message_box(
                     f"""\
                 A PDF of your book can be found at:
