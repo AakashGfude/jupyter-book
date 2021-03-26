@@ -230,7 +230,7 @@ def _gen_toctree(options, subsections, parent_suff):
 
     # Create the markdown directive for our toctree
     toctree = dedent(toctree_template).format(
-        options=options, sections="\n".join(subsections)
+        options=options, sections="\n ".join(subsections)
     )
     return toctree
 
